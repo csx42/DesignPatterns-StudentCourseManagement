@@ -10,7 +10,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     private int maximumCourseAllocation;
     private int totalSatisfactionRate;
 
-    public StudentCourseAllocation(String id) {
+    public StudentCourseAllocation(int id) {
         student = new Student(id);
         noOfCoursesAllocated = 0;
         noOfPreferredCourses = 9;
@@ -19,14 +19,14 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         preferredCourses = new CoursePreference[noOfPreferredCourses];
     }
 
-    public StudentCourseAllocation(String id, int noOfPreferredCourses) {
+    public StudentCourseAllocation(int id, int noOfPreferredCourses) {
         student = new Student(id);
         this.noOfPreferredCourses = noOfPreferredCourses;
         allocatedCourses = new CoursePreference[maximumCourseAllocation];
         preferredCourses = new CoursePreference[noOfPreferredCourses];
     }
 
-    public StudentCourseAllocation(String id, int maximumCourseAllocation, int noOfPreferredCourses) {
+    public StudentCourseAllocation(int id, int maximumCourseAllocation, int noOfPreferredCourses) {
         student = new Student(id);
         this.maximumCourseAllocation = maximumCourseAllocation;
         this.noOfPreferredCourses = noOfPreferredCourses;
@@ -34,7 +34,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         preferredCourses = new CoursePreference[noOfPreferredCourses];
     }
 
-    public StudentCourseAllocation(String firstName, String lastName, String id, int noOfCoursesAllocated, int noOfPreferredCourses, int maximumCourseAllocation) {
+    public StudentCourseAllocation(String firstName, String lastName, int id, int noOfCoursesAllocated, int noOfPreferredCourses, int maximumCourseAllocation) {
         student = new Student(firstName,lastName,id);
         this.noOfCoursesAllocated = noOfCoursesAllocated;
         this.noOfPreferredCourses = noOfPreferredCourses;
@@ -65,21 +65,18 @@ public class StudentCourseAllocation implements StudentCourseInterface{
 
     private CoursePreference getPreferredCourseObject(Course requestedCourse){
         for (CoursePreference preferredCourse : preferredCourses) {
-            if (requestedCourse.getCourseName().equals(preferredCourse.getCourseName())) {
+            if (requestedCourse.getCourseName().equals(preferredCourse.getCourse().getCourseName())) {
                 return preferredCourse;
             }
         }
         return null;
     }
 
-    public void allocateCourse(Course requestedCourse){
-        if(noOfCoursesAllocated>=maximumCourseAllocation){
-            //print error message;
-        }
+    public void assignCourse(Course requestedCourse){
         allocatedCourses[noOfCoursesAllocated]= getPreferredCourseObject(requestedCourse);
         noOfCoursesAllocated+=1;
 
-        calculateTotalSatisfactionRate();
+        //calculateTotalSatisfactionRate();
     }
 
     public void calculateTotalSatisfactionRate(){
@@ -94,7 +91,44 @@ public class StudentCourseAllocation implements StudentCourseInterface{
 
     public void setPreferredCourses(String[] courses){
         for(int i=0; i<courses.length; i++){
-            preferredCourses[i]=new CoursePreference(new Course(courses[i]),i);
+            preferredCourses[i]=new CoursePreference(new Course(courses[i]),noOfPreferredCourses-i);
+        }
+    }
+
+    public Course[] allocateCourses(Course[] availableCourseList){
+        int[] times = new int[3];
+        for (CoursePreference preferredCourse : preferredCourses) {
+            if(noOfCoursesAllocated<maximumCourseAllocation){
+                for(Course course : availableCourseList){
+                    if (course.getCourseName().equals(preferredCourse.getCourse().getCourseName())
+                        && course.getMaxCapacity()>course.getNoOfFilledSeats()
+                        && timeConflict(times,course.getTime())){
+                            times[noOfCoursesAllocated]=course.getTime();
+                            assignCourse(course);
+                            course.fillASeat();
+                    }
+                }
+            }
+            else{
+                break;
+            }
+        }
+        return availableCourseList;
+    }
+
+    public boolean timeConflict(int[] times, int currTime){
+        for(int i=0; i<noOfCoursesAllocated; i++){
+            if (currTime==times[i]){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void printResults(){
+        for(int i=0; i<noOfCoursesAllocated; i++){
+            System.out.println(allocatedCourses[i].getCourse().getCourseName());
+            System.out.println((allocatedCourses[i].getPreference()));
         }
     }
 

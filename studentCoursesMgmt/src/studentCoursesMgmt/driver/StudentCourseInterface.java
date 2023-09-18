@@ -1,9 +1,11 @@
 package studentCoursesMgmt.driver;
 
 public interface StudentCourseInterface {
-    void allocateCourse(Course requestedCourse);
+    Course[] allocateCourses(Course[] availableCourseList);
     void calculateTotalSatisfactionRate();
     float getAverageSatisfactionRate();
     void setPreferredCourses(String[] courses);
+    void assignCourse(Course requestedCourse);
+    void printResults();
 
 }

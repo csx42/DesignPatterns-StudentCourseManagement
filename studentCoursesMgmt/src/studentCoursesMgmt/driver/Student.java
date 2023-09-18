@@ -1,16 +1,16 @@
 package studentCoursesMgmt.driver;
 
-public class Student implements StudentInterface{
+public class Student {
 
     private String FirstName;
     private String LastName;
-    private String Id;
+    private int Id;
 
-    public Student(String id) {
+    public Student(int id) {
         Id = id;
     }
 
-    public Student(String firstName, String lastName, String id) {
+    public Student(String firstName, String lastName, int id) {
         FirstName = firstName;
         LastName = lastName;
         Id = id;
@@ -32,11 +32,11 @@ public class Student implements StudentInterface{
         LastName = lastName;
     }
 
-    public String getId() {
+    public int getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         Id = id;
     }
 

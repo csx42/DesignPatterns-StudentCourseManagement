@@ -1,40 +1,50 @@
 package studentCoursesMgmt.driver;
 
-public class Course implements CourseInterface{
+public class Course {
 
-    private String CourseName;
-    private int Time;
+    private String courseName;
+    private int classTime;
     private int maxCapacity;
+    private int noOfFilledSeats;
 
-    public Course(String courseName, int time, int maxCapacity) {
-        CourseName = courseName;
-        Time = time;
-        this.maxCapacity = maxCapacity;
+    public Course(String name, int time, int capacity) {
+        courseName = name;
+        classTime = time;
+        maxCapacity = capacity;
+        noOfFilledSeats = 0;
     }
 
     //If time,maxCapacity is 0 - course has not been assigned time and maxCapacity yet.
-    public Course(String courseName) {
-        CourseName = courseName;
-        Time = 0;
+    public Course(String name) {
+        courseName = name;
+        classTime = 0;
         maxCapacity = 0;
+        noOfFilledSeats =0;
     }
 
     public Course(Course requestedCourse) {
-        CourseName = requestedCourse.getCourseName();
-        Time = requestedCourse.getTime();
+        courseName = requestedCourse.getCourseName();
+        classTime = requestedCourse.getTime();
         maxCapacity = requestedCourse.getMaxCapacity();
+        noOfFilledSeats = requestedCourse.getNoOfFilledSeats();
     }
 
-    public void setCourseName(String courseName) {
-        CourseName = courseName;
+    public int getNoOfFilledSeats() {
+        return noOfFilledSeats;
+    }
+    public void setNoOfFilledSeats(int noOfFilledSeats) {
+        this.noOfFilledSeats = noOfFilledSeats;
+    }
+    public void setCourseName(String Name) {
+        courseName = Name;
     }
 
     public int getTime() {
-        return Time;
+        return classTime;
     }
 
     public void setTime(int time) {
-        Time = time;
+        classTime = time;
     }
 
     public int getMaxCapacity() {
@@ -42,8 +52,11 @@ public class Course implements CourseInterface{
     }
 
     public String getCourseName() {
-        return CourseName;
+        return courseName;
     }
 
+    public void fillASeat(){
+        noOfFilledSeats+=1;
+    }
 
 }
