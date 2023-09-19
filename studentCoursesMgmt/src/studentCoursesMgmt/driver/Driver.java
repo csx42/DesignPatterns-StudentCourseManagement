@@ -1,11 +1,18 @@
 package studentCoursesMgmt.driver;
 
+import studentCoursesMgmt.util.FileDisplayInterface;
+import studentCoursesMgmt.util.FileInput;
+import studentCoursesMgmt.util.Results;
+
+import java.util.Arrays;
+import java.io.IOException;
+
 /**
  * @author placeholder
  *
  */
 public class Driver {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 
 		/*
 		 * As the build.xml specifies the arguments as argX, in case the
@@ -19,21 +26,48 @@ public class Driver {
 //			System.err.println("Error: Incorrect number of arguments. Program accepts 5 arguments.");
 //			System.exit(0);
 //		}
-		String[] courses = {"A","B","C","D","E","F","G","H","I"};
-		int[] max = {3,2,5,3,7,5,7,8,2};
-		int[] time = {11,33,11,44,55,66,66,22,22};
-		AvailableCourses availableCourses = new AvailableCourses(9);
-		for(int i=0; i<9; i++){
-			availableCourses.addToAvailableCourse(courses[i],time[i], max[i]);
-		}
-		Course[] availableCourseList = availableCourses.getAvailableCourses();
 
-		int id = 111;
-		StudentCourseInterface studentCourseAllocation = new StudentCourseAllocation(id);
-		String[] preferred = {"A","I","C","H","E","D","G","F","B"};
-		studentCourseAllocation.setPreferredCourses(preferred);
-		availableCourseList = studentCourseAllocation.allocateCourses(availableCourseList);
-		studentCourseAllocation.printResults();
+		Course[] availableCourseList = readCourseFile();
 
+		StudentCourseInterface studentCourseAllocation = null;
+		String[] preferred = new String[0];
+		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList);
 	}
+
+	public static void allocateAndPrintResult(StudentCourseInterface studentCourseAllocation, String[] preferred,
+												  Course[] availableCourseList) throws IOException {
+		FileInput fileInput = new FileInput("/Users/spoorthisanjay/DP/coursePrefs.txt", " ");
+		fileInput.getFileForRead();
+		String[] input;
+		do {
+			input = fileInput.readFileContent();
+			if (input != null) {
+				studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
+				preferred = Arrays.copyOfRange(input, 1, 10);
+				preferred[8] = preferred[8].substring(0, 1);
+				studentCourseAllocation.setPreferredCourses(preferred);
+				availableCourseList = studentCourseAllocation.allocateCourses(availableCourseList);
+				FileDisplayInterface print = new Results("/Users/spoorthisanjay/DP/registration_results.txt");
+				print.getFileForWrite();
+				studentCourseAllocation.printResults(print);
+				print.closeFileWriter();
+			}
+		} while (input != null);
+	}
+
+	public static Course[] readCourseFile() throws IOException{
+		AvailableCourses availableCourses = new AvailableCourses(9);
+		FileInput fileInput = new FileInput("/Users/spoorthisanjay/DP/courseInfo.txt",":");
+		fileInput.getFileForRead();
+		String[] input;
+		do{
+			input = fileInput.readFileContent();
+			if(input!=null) {
+				availableCourses.addToAvailableCourse(input[0], Integer.parseInt(input[2]), Integer.parseInt(input[1]));
+			}
+
+		}while (input!=null);
+		return availableCourses.getAvailableCourses();
+	}
+
 }
