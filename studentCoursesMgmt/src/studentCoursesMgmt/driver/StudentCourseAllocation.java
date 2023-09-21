@@ -1,7 +1,6 @@
 package studentCoursesMgmt.driver;
 
 import studentCoursesMgmt.util.FileDisplayInterface;
-import studentCoursesMgmt.util.Results;
 
 import java.io.IOException;
 
@@ -80,8 +79,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     public void assignCourse(Course requestedCourse){
         allocatedCourses[noOfCoursesAllocated]= getPreferredCourseObject(requestedCourse);
         noOfCoursesAllocated+=1;
-
-        //calculateTotalSatisfactionRate();
     }
 
     public void calculateTotalSatisfactionRate(){
@@ -91,6 +88,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     }
 
     public float getAverageSatisfactionRate() {
+        calculateTotalSatisfactionRate();
         return (float) totalSatisfactionRate/noOfCoursesAllocated;
     }
 
@@ -130,11 +128,15 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         return true;
     }
 
-    //<student1_id>:<course_1>,<course_2>,<course_3>::SatisfactionRating=<value>
     public void printResults(FileDisplayInterface results) throws IOException {
         StringBuilder output = new StringBuilder(student.getId() + ":");
         for (int i = 0; i < noOfCoursesAllocated; i++) {
-            output.append(allocatedCourses[i].getCourse().getCourseName() + ",");
+            if(i==noOfCoursesAllocated-1) {
+                output.append(allocatedCourses[i].getCourse().getCourseName());
+            }
+            else{
+                output.append(allocatedCourses[i].getCourse().getCourseName()+",");
+            }
         }
         output.append("::" + getAverageSatisfactionRate()+"\n");
         results.printOutputToFile(output.toString());
