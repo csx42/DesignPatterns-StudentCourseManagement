@@ -1,10 +1,9 @@
 package studentCoursesMgmt.util;
 
 import java.io.IOException;
-import java.util.Scanner;
 
 public class FileInput {
-    FileProcessor fileProcessor;
+    FileProcessorInterface fileProcessor;
     private String filePath;
     private String delimiter;
 

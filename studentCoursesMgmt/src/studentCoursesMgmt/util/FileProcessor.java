@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class FileProcessor {
+public class FileProcessor implements FileProcessorInterface{
 	private String filePath;
     private File file;
     private Scanner scanner;

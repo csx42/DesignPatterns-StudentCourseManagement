@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public class Results implements FileDisplayInterface, StdoutDisplayInterface {
 	private String filePath;
-    FileProcessor fileProcessor;
+    FileProcessorInterface fileProcessor;
 
     public Results(String filePath) {
         this.filePath = filePath;
