@@ -20,7 +20,6 @@ public class FileInput {
     public String[] readFileContent() throws IOException {
         String input = fileProcessor.readFile();
         if (input != null) {
-            System.out.println(input);
             return input.split(delimiter);
         } else {
             return null;
