@@ -1,9 +1,14 @@
 package studentCoursesMgmt.driver;
 
 import studentCoursesMgmt.util.FileDisplayInterface;
-
+import studentCoursesMgmt.util.Results;
+import studentCoursesMgmt.util.StdoutDisplayInterface;
 import java.io.IOException;
 
+/**
+ * @author Spoorthi
+ *
+ */
 public class StudentCourseAllocation implements StudentCourseInterface{
 
     private Student student;
@@ -98,17 +103,39 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         }
     }
 
-    public Course[] allocateCourses(Course[] availableCourseList){
+    public Course[] allocateCourses(Course[] availableCourseList) throws IOException {
         int[] times = new int[3];
         for (CoursePreference preferredCourse : preferredCourses) {
             if(noOfCoursesAllocated<maximumCourseAllocation){
                 for(Course course : availableCourseList){
-                    if (course.getCourseName().equals(preferredCourse.getCourse().getCourseName())
-                        && course.getMaxCapacity()>course.getNoOfFilledSeats()
-                        && timeConflict(times,course.getTime())){
-                            times[noOfCoursesAllocated]=course.getTime();
-                            assignCourse(course);
-                            course.fillASeat();
+                    if (course.getCourseName().equals(preferredCourse.getCourse().getCourseName())){
+                        if (course.getMaxCapacity() > course.getNoOfFilledSeats()) {
+                            int ifTimeConflict = timeConflict(times, course.getTime());
+                            if (ifTimeConflict == -1) {
+                                times[noOfCoursesAllocated] = course.getTime();
+                                assignCourse(course);
+                                course.fillASeat();
+                            } else {
+                                FileDisplayInterface print = new Results("/Users/spoorthisanjay/DP/regConflicts.txt");
+                                print.getFileForWrite();
+                                String message = "Student with id " + student.getId() + " cannot be allocated course " + preferredCourse.getCourse().getCourseName()
+                                        + " since it has a time conflict with " + allocatedCourses[ifTimeConflict].getCourse().getCourseName()
+                                        + " which is already been assigned.\n";
+                                print.printOutputToFile(message);
+                                print.closeFileWriter();
+                            }
+                        }
+                        else{
+                            FileDisplayInterface print = new Results("/Users/spoorthisanjay/DP/errorLog.txt");
+                            print.getFileForWrite();
+                            String message = "Student with id " + student.getId() +" cannot be allocated course "+ course.getCourseName()
+                                    + " as it is completely filled. \n";
+                            print.printOutputToFile(message);
+                            print.closeFileWriter();
+
+                            StdoutDisplayInterface stdout = new Results();
+                            stdout.printOutputToStdout(message);
+                        }
                     }
                 }
             }
@@ -119,16 +146,18 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         return availableCourseList;
     }
 
-    public boolean timeConflict(int[] times, int currTime){
+    public int timeConflict(int[] times, int currTime){
         for(int i=0; i<noOfCoursesAllocated; i++){
             if (currTime==times[i]){
-                return false;
+                return i;
             }
         }
-        return true;
+        return -1;
     }
 
-    public void printResults(FileDisplayInterface results) throws IOException {
+    public void printResults(String outputFile) throws IOException {
+        FileDisplayInterface print = new Results(outputFile);
+        print.getFileForWrite();
         StringBuilder output = new StringBuilder(student.getId() + ":");
         for (int i = 0; i < noOfCoursesAllocated; i++) {
             if(i==noOfCoursesAllocated-1) {
@@ -139,7 +168,16 @@ public class StudentCourseAllocation implements StudentCourseInterface{
             }
         }
         output.append("::" + getAverageSatisfactionRate()+"\n");
-        results.printOutputToFile(output.toString());
+        print.printOutputToFile(output.toString());
+        print.closeFileWriter();
+
+
+        StdoutDisplayInterface stdout = new Results();
+        stdout.printOutputToStdout(output.toString());
+    }
+
+    public void printResultToStdOut(StdoutDisplayInterface results){
+
     }
 
 }

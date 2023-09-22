@@ -7,6 +7,10 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface {
 	private String filePath;
     FileProcessorInterface fileProcessor;
 
+    public Results(){
+
+    }
+
     public Results(String filePath) {
         this.filePath = filePath;
         fileProcessor = new FileProcessor(filePath);
@@ -24,11 +28,11 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface {
         fileProcessor.closeFile();
     }
 
-    public void printOutputToStdout(){
-
+    public void printOutputToStdout(String output){
+        System.out.print(output);
     }
 
-    public void printErrorToStdout(){
-
+    public void printErrorToStdout(String errorMessage){
+        System.err.println(errorMessage);
     }
 }
