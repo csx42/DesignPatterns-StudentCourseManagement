@@ -21,4 +21,14 @@ public class AvailableCourses {
         return availableCourses;
     }
 
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append("Available courses are: ");
+        for(Course availableCourse : availableCourses){
+            str.append(availableCourse.getCourseName());
+        }
+
+        return str.toString();
+    }
+
 }

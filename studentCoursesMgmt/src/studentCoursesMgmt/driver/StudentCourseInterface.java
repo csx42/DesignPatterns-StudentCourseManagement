@@ -12,5 +12,4 @@ public interface StudentCourseInterface {
     void assignCourse(Course requestedCourse);
     void printResults(String filePath) throws IOException;
     public int timeConflict(int[] times, int currTime);
-
 }

@@ -59,4 +59,10 @@ public class Course {
         noOfFilledSeats+=1;
     }
 
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append(courseName + " " + classTime + " " + maxCapacity + " " + noOfFilledSeats);
+        return str.toString();
+    }
+
 }

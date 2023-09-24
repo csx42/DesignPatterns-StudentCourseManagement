@@ -35,4 +35,10 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface {
     public void printErrorToStdout(String errorMessage){
         System.err.println(errorMessage);
     }
+
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append("File path is "+ filePath);
+        return str.toString();
+    }
 }

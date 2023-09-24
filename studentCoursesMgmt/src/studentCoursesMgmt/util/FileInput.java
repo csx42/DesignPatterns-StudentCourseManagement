@@ -25,4 +25,10 @@ public class FileInput {
             return null;
         }
     }
+
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append(filePath + " " + delimiter );
+        return str.toString();
+    }
 }

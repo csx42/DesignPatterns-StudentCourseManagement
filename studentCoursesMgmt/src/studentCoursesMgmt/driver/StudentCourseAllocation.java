@@ -163,28 +163,29 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     }
 
     public void printResults(String outputFile) throws IOException {
+        String output = this.toString();
+
         FileDisplayInterface print = new Results(outputFile);
         print.getFileForWrite();
+        print.printOutputToFile(output);
+        print.closeFileWriter();
+
+        StdoutDisplayInterface stdout = new Results();
+        stdout.printOutputToStdout(output);
+    }
+
+    public String toString(){
         StringBuilder output = new StringBuilder(student.getId() + ":");
         for (int i = 0; i < noOfCoursesAllocated; i++) {
             if(i==noOfCoursesAllocated-1) {
                 output.append(allocatedCourses[i].getCourse().getCourseName());
             }
             else{
-                output.append(allocatedCourses[i].getCourse().getCourseName()+",");
+                output.append(allocatedCourses[i].getCourse().getCourseName()).append(",");
             }
         }
-        output.append("::" + getAverageSatisfactionRate()+"\n");
-        print.printOutputToFile(output.toString());
-        print.closeFileWriter();
-
-
-        StdoutDisplayInterface stdout = new Results();
-        stdout.printOutputToStdout(output.toString());
-    }
-
-    public void printResultToStdOut(StdoutDisplayInterface results){
-
+        output.append("::").append(getAverageSatisfactionRate()).append("\n");
+        return output.toString();
     }
 
 }

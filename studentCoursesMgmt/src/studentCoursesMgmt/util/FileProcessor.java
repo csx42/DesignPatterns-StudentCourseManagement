@@ -69,5 +69,10 @@ public class FileProcessor implements FileProcessorInterface{
         fileWriter.close();
     }
 
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append("File path is "+ filePath);
+        return str.toString();
+    }
 
 }

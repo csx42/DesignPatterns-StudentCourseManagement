@@ -40,4 +40,10 @@ public class Student {
         Id = id;
     }
 
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append(Id + " " + FirstName + " " + LastName);
+        return str.toString();
+    }
+
 }

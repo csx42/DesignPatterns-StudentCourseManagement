@@ -24,4 +24,10 @@ public class CoursePreference {
     public void setPreference(int preference){
         this.preference = preference;
     }
+
+    public String toString(){
+        StringBuilder str = new StringBuilder();
+        str.append(course.getCourseName() + " " + preference);
+        return str.toString();
+    }
 }
