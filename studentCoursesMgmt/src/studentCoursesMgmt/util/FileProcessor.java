@@ -22,19 +22,35 @@ public class FileProcessor implements FileProcessorInterface{
         filePath = file;
     }
 
-    public Scanner getFileForRead() throws IOException {
-        file = new File(filePath);
-        scanner = new Scanner(file);
-        return scanner;
+    public Scanner getFileForRead() {
+        try {
+            file = new File(filePath);
+            scanner = new Scanner(file);
+            return scanner;
+        }
+        catch (IOException e){
+            System.err.println(filePath + " file not found.");
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return null;
     }
 
-    public FileWriter getFileForWrite() throws IOException {
-        file = new File(filePath);
-        fileWriter = new FileWriter(file,true);
-        return fileWriter;
+    public FileWriter getFileForWrite() {
+        try {
+            file = new File(filePath);
+            fileWriter = new FileWriter(file,true);
+            return fileWriter;
+        }
+        catch (IOException e){
+            System.err.println(filePath + " file not found.");
+            e.printStackTrace();
+            System.exit(0);
+        }
+        return null;
     }
 
-    public String readFile() throws IOException{
+    public String readFile() {
         if(scanner.hasNextLine()){
             return scanner.nextLine();
         }
@@ -43,7 +59,7 @@ public class FileProcessor implements FileProcessorInterface{
         }
     }
 
-    public void writeToFile(String output) throws IOException{
+    public void writeToFile(String output) throws IOException {
         if(output!=null){
             fileWriter.write(output);
         }

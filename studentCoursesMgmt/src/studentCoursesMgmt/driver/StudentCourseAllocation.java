@@ -94,7 +94,14 @@ public class StudentCourseAllocation implements StudentCourseInterface{
 
     public float getAverageSatisfactionRate() {
         calculateTotalSatisfactionRate();
-        return (float) totalSatisfactionRate/noOfCoursesAllocated;
+        try {
+            return (float) totalSatisfactionRate/noOfCoursesAllocated;
+        }
+        catch (ArithmeticException e){
+            System.err.println("divide by zero exception.");
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public void setPreferredCourses(String[] courses){
