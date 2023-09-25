@@ -143,7 +143,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
      * it adds a message in regConflicts.txt. If requested has no seats remaining it reports an error to the errorLog.txt.
      * @throws IOException throws io exception when files are not found.
      */
-    public void allocateCourses() throws IOException {
+    public void allocateCourses(String regConflictsFilepath, String errorLogsFilePath) throws IOException {
         int[] times = new int[3];
         for (CoursePreference preferredCourse : preferredCourses) {
             if(noOfCoursesAllocated<maximumCourseAllocation){
@@ -155,7 +155,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                         assignCourse(course);
                         course.fillASeat();
                     } else {
-                        FileDisplayInterface print = new Results("/Users/spoorthisanjay/DP/regConflicts.txt");
+                        FileDisplayInterface print = new Results(regConflictsFilepath);
                         print.getFileForWrite();
                         String message = "Student with id " + student.getId() + " cannot be allocated course " + preferredCourse.getCourse().getCourseName()
                                 + " since it has a time conflict with " + allocatedCourses[ifTimeConflict].getCourse().getCourseName()
@@ -165,7 +165,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                     }
                 }
                 else{
-                    FileDisplayInterface print = new Results("/Users/spoorthisanjay/DP/errorLog.txt");
+                    FileDisplayInterface print = new Results(errorLogsFilePath);
                     print.getFileForWrite();
                     String message = "Student with id " + student.getId() +" cannot be allocated course "+ course.getCourseName()
                             + " as it is completely filled. \n";

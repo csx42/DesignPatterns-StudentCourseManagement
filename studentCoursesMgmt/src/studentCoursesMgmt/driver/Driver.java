@@ -4,10 +4,7 @@ import studentCoursesMgmt.util.FileInput;
 import java.util.Arrays;
 import java.io.IOException;
 
-/**
- * @author spoorthi
- *
- */
+
 public class Driver {
 	public static void main(String[] args) throws IOException {
 
@@ -18,15 +15,16 @@ public class Driver {
 			System.exit(0);
 		}
 
-		Course[] availableCourseList = readCourseFile();
+		Course[] availableCourseList = readCourseFile(args[1]);
 		StudentCourseInterface studentCourseAllocation = null;
 		String[] preferred = new String[0];
-		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList);
+		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, args[0], args[2], args[3], args[4]);
 	}
 
 	public static void allocateAndPrintResult(StudentCourseInterface studentCourseAllocation, String[] preferred,
-												  Course[] availableCourseList) throws IOException {
-		FileInput fileInput = new FileInput("/Users/spoorthisanjay/DP/coursePrefs.txt", " ");
+											  Course[] availableCourseList, String coursePrefs, String results, String regConflictsFilePath,
+											  String errorLogsFilePath) throws IOException {
+		FileInput fileInput = new FileInput(coursePrefs, " ");
 		fileInput.getFileForRead();
 		String[] input;
 		do {
@@ -36,15 +34,15 @@ public class Driver {
 				preferred = Arrays.copyOfRange(input, 1, 10);
 				preferred[8] = preferred[8].substring(0, 1);
 				studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
-				studentCourseAllocation.allocateCourses();
-				studentCourseAllocation.printResults("/Users/spoorthisanjay/DP/registration_results.txt");
+				studentCourseAllocation.allocateCourses(regConflictsFilePath,errorLogsFilePath);
+				studentCourseAllocation.printResults(results);
 			}
 		} while (input != null);
 	}
 
-	public static Course[] readCourseFile() throws IOException{
+	public static Course[] readCourseFile(String courseInfo) throws IOException{
 		AvailableCourses availableCourses = new AvailableCourses(9);
-		FileInput fileInput = new FileInput("/Users/spoorthisanjay/DP/courseInfo.txt",":");
+		FileInput fileInput = new FileInput(courseInfo,":");
 		fileInput.getFileForRead();
 		String[] input;
 		do{

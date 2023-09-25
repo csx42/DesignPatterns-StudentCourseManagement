@@ -3,7 +3,7 @@ package studentCoursesMgmt.driver;
 import java.io.IOException;
 
 public interface StudentCourseInterface {
-    void allocateCourses() throws IOException;
+    void allocateCourses(String regConflictsPath, String errorLogFilePath) throws IOException;
     int calculateTotalSatisfactionRate();
     float getAverageSatisfactionRate();
     void setPreferredCourses(String[] courses, Course[] availableCourseList);
