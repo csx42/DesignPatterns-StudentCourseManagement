@@ -12,10 +12,13 @@
 
   <target name="clean">
        <delete dir="${BUILD}"/>
+       <delete file="src/studentCoursesMgmt/regResults.txt" verbose="true"/>
+       <delete file="src/studentCoursesMgmt/regConflicts.txt" verbose="true"/>
+       <delete file="src/studentCoursesMgmt/errorLog.txt" verbose="true"/>
   </target>
 
-  <!-- Prepare target directories -->
-  <target name="prepare">
+  <!-- Prepare target directories and clean-->
+  <target name="prepare" depends="clean">
         <mkdir dir="${BUILD}"/>
         <mkdir dir="${classes}"/>
   </target>
