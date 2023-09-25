@@ -5,7 +5,7 @@ public class CoursePreference {
     private int preference;
 
     public CoursePreference(Course requestedCourse, int preference) {
-        course = new Course(requestedCourse);
+        course = requestedCourse;
         this.preference = preference;
     }
 

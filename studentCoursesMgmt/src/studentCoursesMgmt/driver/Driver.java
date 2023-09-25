@@ -35,8 +35,8 @@ public class Driver {
 				studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
 				preferred = Arrays.copyOfRange(input, 1, 10);
 				preferred[8] = preferred[8].substring(0, 1);
-				studentCourseAllocation.setPreferredCourses(preferred);
-				availableCourseList = studentCourseAllocation.allocateCourses(availableCourseList);
+				studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
+				studentCourseAllocation.allocateCourses();
 				studentCourseAllocation.printResults("/Users/spoorthisanjay/DP/registration_results.txt");
 			}
 		} while (input != null);
