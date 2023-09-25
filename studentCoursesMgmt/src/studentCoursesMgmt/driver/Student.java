@@ -41,9 +41,7 @@ public class Student {
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append(Id + " " + FirstName + " " + LastName);
-        return str.toString();
+        return Id + " " + FirstName + " " + LastName;
     }
 
 }

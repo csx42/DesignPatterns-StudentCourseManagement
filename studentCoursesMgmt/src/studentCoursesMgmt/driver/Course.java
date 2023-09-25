@@ -32,13 +32,9 @@ public class Course {
     public int getNoOfFilledSeats() {
         return noOfFilledSeats;
     }
-    public void setNoOfFilledSeats(int noOfFilledSeats) {
-        this.noOfFilledSeats = noOfFilledSeats;
-    }
     public void setCourseName(String Name) {
         courseName = Name;
     }
-
     public int getTime() {
         return classTime;
     }
@@ -50,7 +46,9 @@ public class Course {
     public int getMaxCapacity() {
         return maxCapacity;
     }
-
+    public void setMaxCapacity(int maxCapacity) {
+        this.maxCapacity = maxCapacity;
+    }
     public String getCourseName() {
         return courseName;
     }
@@ -60,9 +58,7 @@ public class Course {
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append(courseName + " " + classTime + " " + maxCapacity + " " + noOfFilledSeats);
-        return str.toString();
+        return courseName + " " + classTime + " " + maxCapacity + " " + noOfFilledSeats;
     }
 
 }

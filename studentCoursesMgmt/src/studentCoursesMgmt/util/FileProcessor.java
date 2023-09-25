@@ -70,9 +70,7 @@ public class FileProcessor implements FileProcessorInterface{
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append("File path is "+ filePath);
-        return str.toString();
+        return "File path is " + filePath;
     }
 
 }

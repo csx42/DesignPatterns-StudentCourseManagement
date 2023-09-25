@@ -26,8 +26,6 @@ public class CoursePreference {
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append(course.getCourseName() + " " + preference);
-        return str.toString();
+        return course.getCourseName() + " " + preference;
     }
 }

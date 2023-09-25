@@ -13,6 +13,22 @@ public class FileInput {
         delimiter = separator;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public String getDelimiter() {
+        return delimiter;
+    }
+
+    public void setDelimiter(String delimiter) {
+        this.delimiter = delimiter;
+    }
+
     public void getFileForRead() throws IOException{
         fileProcessor.getFileForRead();
     }
@@ -27,8 +43,6 @@ public class FileInput {
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append(filePath + " " + delimiter );
-        return str.toString();
+        return filePath + " " + delimiter;
     }
 }

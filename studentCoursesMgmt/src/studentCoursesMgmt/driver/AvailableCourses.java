@@ -12,6 +12,14 @@ public class AvailableCourses {
         count = 0;
     }
 
+    public int getNoOfCoursesAvailable() {
+        return noOfCoursesAvailable;
+    }
+
+    public void setNoOfCoursesAvailable(int noOfCoursesAvailable) {
+        this.noOfCoursesAvailable = noOfCoursesAvailable;
+    }
+
     public void addToAvailableCourse(String name, int time, int maxCapacity){
         availableCourses[count]= new Course(name,time,maxCapacity);
         count+=1;

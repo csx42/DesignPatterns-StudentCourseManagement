@@ -1,7 +1,5 @@
 package studentCoursesMgmt.driver;
 
-import studentCoursesMgmt.util.FileDisplayInterface;
-
 import java.io.IOException;
 
 public interface StudentCourseInterface {

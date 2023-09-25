@@ -1,6 +1,5 @@
 package studentCoursesMgmt.util;
 
-import java.io.FileWriter;
 import java.io.IOException;
 
 public class Results implements FileDisplayInterface, StdoutDisplayInterface {
@@ -37,8 +36,6 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface {
     }
 
     public String toString(){
-        StringBuilder str = new StringBuilder();
-        str.append("File path is "+ filePath);
-        return str.toString();
+        return "File path is " + filePath;
     }
 }
