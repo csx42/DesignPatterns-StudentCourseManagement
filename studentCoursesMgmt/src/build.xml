@@ -12,7 +12,7 @@
 
   <target name="clean">
        <delete dir="${BUILD}"/>
-       <delete file="src/studentCoursesMgmt/regResults.txt" verbose="true"/>
+       <delete file="src/studentCoursesMgmt/registration_results.txt" verbose="true"/>
        <delete file="src/studentCoursesMgmt/regConflicts.txt" verbose="true"/>
        <delete file="src/studentCoursesMgmt/errorLog.txt" verbose="true"/>
   </target>
