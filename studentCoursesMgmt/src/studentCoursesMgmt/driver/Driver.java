@@ -7,6 +7,7 @@ import studentCoursesMgmt.util.FileDisplayInterface;
 import studentCoursesMgmt.util.Results;
 import studentCoursesMgmt.util.StdoutDisplayInterface;
 import java.text.DecimalFormat;  
+import java.nio.file.FileSystems;
 
 public class Driver {
 	public static void main(String[] args) throws IOException {
@@ -19,10 +20,13 @@ public class Driver {
 			System.exit(0);
 		}
 
-		Course[] availableCourseList = readCourseFile(args[1]);
+		String userDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
+        userDirectory += "/";
+		
+		Course[] availableCourseList = readCourseFile(userDirectory+args[1]);
 		StudentCourseInterface studentCourseAllocation = null;
 		String[] preferred = new String[0];
-		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, args[0], args[2], args[3], args[4]);
+		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, userDirectory+args[0], userDirectory+args[2], userDirectory+args[3], userDirectory+args[4]);
 
 	}
 
