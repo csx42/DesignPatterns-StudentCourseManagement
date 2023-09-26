@@ -4,6 +4,7 @@ import studentCoursesMgmt.util.FileDisplayInterface;
 import studentCoursesMgmt.util.Results;
 import studentCoursesMgmt.util.StdoutDisplayInterface;
 import java.io.IOException;
+import java.text.DecimalFormat;  
 
 /**
  * This class allocate courses to a student according the preferences specified.
@@ -20,7 +21,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     private int noOfCoursesAllocated;
     private int noOfPreferredCourses;
     private int maximumCourseAllocation;
-    private int totalSatisfactionRate;
 
     public StudentCourseAllocation(int id) {
         student = new Student(id);
@@ -71,10 +71,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         this.noOfCoursesAllocated = noOfCoursesAllocated;
     }
 
-    public int getTotalSatisfactionRate() {
-        return totalSatisfactionRate;
-    }
-
     /**
      * @param requestedCourse
      * @return It returns preferred course object.
@@ -101,8 +97,9 @@ public class StudentCourseAllocation implements StudentCourseInterface{
      * This method calculates and returns total satisfaction rate.
      */
     public int calculateTotalSatisfactionRate(){
+        int totalSatisfactionRate = 0;
         for (CoursePreference allocatedCourse : allocatedCourses) {
-            this.totalSatisfactionRate += allocatedCourse.getPreference();
+            totalSatisfactionRate += allocatedCourse.getPreference();
         }
         return totalSatisfactionRate;
     }
@@ -112,9 +109,10 @@ public class StudentCourseAllocation implements StudentCourseInterface{
      * @return float value of satisfaction rate or -1 if denominator is 0.
      */
     public float getAverageSatisfactionRate() {
-        calculateTotalSatisfactionRate();
+        DecimalFormat decfor = new DecimalFormat("0.00");
+        int totalSatisfactionRate = calculateTotalSatisfactionRate();
         try {
-            return (float) totalSatisfactionRate/noOfCoursesAllocated;
+            return Float.valueOf(decfor.format((float)totalSatisfactionRate/noOfCoursesAllocated));
         }
         catch (ArithmeticException e){
             System.err.println("divide by zero exception.");
@@ -224,7 +222,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                 output.append(allocatedCourses[i].getCourse().getCourseName()).append(",");
             }
         }
-        output.append("::").append(getAverageSatisfactionRate()).append("\n");
+        output.append("::SatisfactionRating=").append(getAverageSatisfactionRate()).append("\n");
         return output.toString();
     }
 

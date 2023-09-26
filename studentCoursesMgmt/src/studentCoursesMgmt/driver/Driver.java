@@ -3,13 +3,17 @@ package studentCoursesMgmt.driver;
 import studentCoursesMgmt.util.FileInput;
 import java.util.Arrays;
 import java.io.IOException;
-
+import studentCoursesMgmt.util.FileDisplayInterface;
+import studentCoursesMgmt.util.Results;
+import studentCoursesMgmt.util.StdoutDisplayInterface;
+import java.text.DecimalFormat;  
 
 public class Driver {
 	public static void main(String[] args) throws IOException {
 
 	    if (args.length != 5 || args[0].equals("${arg0}") || args[1].equals("${arg1}") || args[2].equals("${arg2}")
-				|| args[3].equals("${arg3}") || args[4].equals("${arg4}")) {
+				|| args[3].equals("${arg3}") || args[4].equals("${arg4}") || args[0].equals("") || args[1].equals("") || args[2].equals("")
+				|| args[3].equals("") || args[4].equals("")) {
 
 			System.err.println("Error: Incorrect number of arguments. Program accepts 5 arguments.");
 			System.exit(0);
@@ -19,6 +23,7 @@ public class Driver {
 		StudentCourseInterface studentCourseAllocation = null;
 		String[] preferred = new String[0];
 		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, args[0], args[2], args[3], args[4]);
+
 	}
 
 	public static void allocateAndPrintResult(StudentCourseInterface studentCourseAllocation, String[] preferred,
@@ -27,6 +32,8 @@ public class Driver {
 		FileInput fileInput = new FileInput(coursePrefs, " ");
 		fileInput.getFileForRead();
 		String[] input;
+		float avg=0;
+		int numberOfStudents = 0;
 		do {
 			input = fileInput.readFileContent();
 			if (input != null) {
@@ -36,8 +43,35 @@ public class Driver {
 				studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
 				studentCourseAllocation.allocateCourses(regConflictsFilePath,errorLogsFilePath);
 				studentCourseAllocation.printResults(results);
+				avg+=studentCourseAllocation.getAverageSatisfactionRate();
+				numberOfStudents+=1;
 			}
 		} while (input != null);
+
+		
+		printAverageSatisfactionRate(avg,numberOfStudents,results);
+	}
+
+	public static void printAverageSatisfactionRate(float averageSatisfactionRate,int numberOfStudents, String outputFile) throws IOException{
+
+		DecimalFormat decfor = new DecimalFormat("0.00");  
+
+		try{
+			averageSatisfactionRate = averageSatisfactionRate/numberOfStudents;
+		}
+		catch(ArithmeticException e){
+			System.err.println("divide by zero exception.");
+            e.printStackTrace();
+		}
+
+		FileDisplayInterface print = new Results(outputFile);
+        print.getFileForWrite();
+        print.printOutputToFile("AverageSatisfactionRating="+decfor.format(averageSatisfactionRate));
+        print.closeFileWriter();
+
+        StdoutDisplayInterface stdout = new Results();
+        stdout.printOutputToStdout("AverageSatisfactionRating="+decfor.format(averageSatisfactionRate));
+		
 	}
 
 	public static Course[] readCourseFile(String courseInfo) throws IOException{
