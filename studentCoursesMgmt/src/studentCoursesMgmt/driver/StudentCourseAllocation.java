@@ -143,7 +143,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                     print.closeFileWriter();
 
                     StdoutDisplayInterface stdout = new FileOutput();
-                    stdout.printOutputToStdout(message);
+                    stdout.printErrorToStdout(message);
                 }
             }
         }
