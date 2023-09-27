@@ -38,8 +38,23 @@ Note: Arguments accept the absolute path of the files.
 -----------------------------------------------------------------------
 ## Description:
 
+Data Structure and Space complexity:
 
+For course allocation:
+Courses - Stored in a array of Course Objects. 
+Student - Student id and Preferences are stored in Student Object and array of CoursePreference Objects respectively for processing. Student information is processed line by line and whole student information is NOT stored in any data Structure. The StudentCourseAllocation object gets deleted after that student is allocated.
+Allocation - An array of CoursePreference object is used to temporarily store allocated courses. 
 
+For storing the results:
+Results - A hashmap to store the student id and an array of CoursePreference. This Result is used to print results to the file and stdout at the end.
+
+Space Complexity:
+If the number of Students is considered as n for space complexity calculation. Then space complexity is O(n).
+
+Some design guidelines used: 
+1) I have only used composition in all classes not inheritance because non of the classes have "IS-A" relationship between them.
+2) There is no interface for model classes since it stores the information for processing and has only getters and setters. 
+3) Other than model classes others have been coded to the interface.
 
 -----------------------------------------------------------------------
 ### Academic Honesty statement:
