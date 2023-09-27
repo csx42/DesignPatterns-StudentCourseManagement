@@ -12,9 +12,9 @@
 
   <target name="clean">
        <delete dir="${BUILD}"/>
-       <delete file="src/studentCoursesMgmt/registration_results.txt" verbose="true"/>
-       <delete file="src/studentCoursesMgmt/regConflicts.txt" verbose="true"/>
-       <delete file="src/studentCoursesMgmt/errorLog.txt" verbose="true"/>
+       <delete file="registration_results.txt" verbose="true"/>
+       <delete file="regConflicts.txt" verbose="true"/>
+       <delete file="errorLog.txt" verbose="true"/>
   </target>
 
   <!-- Prepare target directories and clean-->

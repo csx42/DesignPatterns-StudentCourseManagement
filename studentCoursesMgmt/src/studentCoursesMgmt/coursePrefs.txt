@@ -1,3 +1,0 @@
-111 D C A B G I H F G;
-222 F E B C D A H I G;
-333 D B F E I C H A G;
