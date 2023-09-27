@@ -13,8 +13,8 @@ public class Driver {
 	public static void main(String[] args) throws IOException {
 
 	    if (args.length != 5 || args[0].equals("${arg0}") || args[1].equals("${arg1}") || args[2].equals("${arg2}")
-				|| args[3].equals("${arg3}") || args[4].equals("${arg4}") || args[0].equals("") || args[1].equals("") || args[2].equals("")
-				|| args[3].equals("") || args[4].equals("")) {
+				|| args[3].equals("${arg3}") || args[4].equals("${arg4}") || args[0].isEmpty() || args[1].isEmpty() || args[2].isEmpty()
+				|| args[3].isEmpty() || args[4].isEmpty()) {
 
 			System.err.println("Error: Incorrect number of arguments. Program accepts 5 arguments.");
 			System.exit(0);
