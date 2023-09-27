@@ -12,9 +12,6 @@
 
   <target name="clean">
        <delete dir="${BUILD}"/>
-       <delete file="registration_results.txt" verbose="true"/>
-       <delete file="regConflicts.txt" verbose="true"/>
-       <delete file="errorLog.txt" verbose="true"/>
   </target>
 
   <!-- Prepare target directories and clean-->
