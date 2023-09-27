@@ -1,6 +1,7 @@
 package studentCoursesMgmt.util;
 
 public interface StdoutDisplayInterface {
-    public void printErrorToStdout(String errorMessage);
-    public void printOutputToStdout(String output);
+    public void printErrorMessageToStdError(String message);
+    public void printRegConflictsToStdOut(String message);
+    public void printResultsToStdOut(String message);
 }

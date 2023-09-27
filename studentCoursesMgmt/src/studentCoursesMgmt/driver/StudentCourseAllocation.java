@@ -17,58 +17,29 @@ public class StudentCourseAllocation implements StudentCourseInterface{
 
     private Student student;
     private CoursePreference[] preferredCourses;
-    private CoursePreference[] allocatedCourses;
-    private int noOfCoursesAllocated;
     private int noOfPreferredCourses;
-    private int maximumCourseAllocation;
+    private Results results;
 
-    public StudentCourseAllocation(int id) {
+    public StudentCourseAllocation(int id, Results result) {
         student = new Student(id);
-        noOfCoursesAllocated = 0;
         noOfPreferredCourses = 9;
-        maximumCourseAllocation = 3;
-        allocatedCourses = new CoursePreference[maximumCourseAllocation];
         preferredCourses = new CoursePreference[noOfPreferredCourses];
+        results = result;
     }
 
-    public StudentCourseAllocation(int id, int noOfPreferredCourses) {
+    public StudentCourseAllocation(int id, Results result, int numberOfPreferredCourses) {
         student = new Student(id);
-        this.noOfPreferredCourses = noOfPreferredCourses;
-        allocatedCourses = new CoursePreference[maximumCourseAllocation];
+        noOfPreferredCourses = numberOfPreferredCourses;
         preferredCourses = new CoursePreference[noOfPreferredCourses];
-    }
-
-    public StudentCourseAllocation(int id, int maximumCourseAllocation, int noOfPreferredCourses) {
-        student = new Student(id);
-        this.maximumCourseAllocation = maximumCourseAllocation;
-        this.noOfPreferredCourses = noOfPreferredCourses;
-        allocatedCourses = new CoursePreference[maximumCourseAllocation];
-        preferredCourses = new CoursePreference[noOfPreferredCourses];
-    }
-
-    public StudentCourseAllocation(String firstName, String lastName, int id, int noOfCoursesAllocated, int noOfPreferredCourses, int maximumCourseAllocation) {
-        student = new Student(firstName,lastName,id);
-        this.noOfCoursesAllocated = noOfCoursesAllocated;
-        this.noOfPreferredCourses = noOfPreferredCourses;
-        this.maximumCourseAllocation = maximumCourseAllocation;
-        allocatedCourses = new CoursePreference[maximumCourseAllocation];
-        preferredCourses = new CoursePreference[noOfPreferredCourses];
+        results = result;
     }
 
     public CoursePreference[] getPreference() {
         return preferredCourses;
     }
 
-    public CoursePreference[] getAllocated() {
-        return allocatedCourses;
-    }
-
-    public int getNoOfCoursesAllocated() {
-        return noOfCoursesAllocated;
-    }
-
-    public void setNoOfCoursesAllocated(int noOfCoursesAllocated) {
-        this.noOfCoursesAllocated = noOfCoursesAllocated;
+    public int getStudentId(){
+        return student.getId();
     }
 
     /**
@@ -89,36 +60,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
      * @param requestedCourse - requested course object.
      */
     public void assignCourse(Course requestedCourse){
-        allocatedCourses[noOfCoursesAllocated]= getPreferredCourseObject(requestedCourse);
-        noOfCoursesAllocated+=1;
-    }
-
-    /**
-     * This method calculates and returns total satisfaction rate.
-     */
-    public int calculateTotalSatisfactionRate(){
-        int totalSatisfactionRate = 0;
-        for (CoursePreference allocatedCourse : allocatedCourses) {
-            totalSatisfactionRate += allocatedCourse.getPreference();
-        }
-        return totalSatisfactionRate;
-    }
-
-    /**
-     * This method calculates average satisfaction rate
-     * @return float value of satisfaction rate or -1 if denominator is 0.
-     */
-    public float getAverageSatisfactionRate() {
-        DecimalFormat decfor = new DecimalFormat("0.00");
-        int totalSatisfactionRate = calculateTotalSatisfactionRate();
-        try {
-            return Float.valueOf(decfor.format((float)totalSatisfactionRate/noOfCoursesAllocated));
-        }
-        catch (ArithmeticException e){
-            System.err.println("divide by zero exception.");
-            e.printStackTrace();
-        }
-        return -1;
+        results.assignCourse(getPreferredCourseObject(requestedCourse));
     }
 
     /**
@@ -144,34 +86,25 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     public void allocateCourses(String regConflictsFilepath, String errorLogsFilePath) throws IOException {
         int[] times = new int[3];
         for (CoursePreference preferredCourse : preferredCourses) {
-            if(noOfCoursesAllocated<maximumCourseAllocation){
+            if(results.getNoOfCoursesAllocated()<results.getMaximumCourseAllocation()){
                 Course course = preferredCourse.getCourse();
                 if (course.getMaxCapacity() > course.getNoOfFilledSeats()) {
                     int ifTimeConflict = timeConflict(times, course.getTime());
                     if (ifTimeConflict == -1) {
-                        times[noOfCoursesAllocated] = course.getTime();
+                        times[results.getNoOfCoursesAllocated()] = course.getTime();
                         assignCourse(course);
                         course.fillASeat();
                     } else {
-                        FileDisplayInterface print = new Results(regConflictsFilepath);
-                        print.getFileForWrite();
                         String message = "Student with id " + student.getId() + " cannot be allocated course " + preferredCourse.getCourse().getCourseName()
-                                + " since it has a time conflict with " + allocatedCourses[ifTimeConflict].getCourse().getCourseName()
+                                + " since it has a time conflict with " + results.getAllocatedCourseName(ifTimeConflict)
                                 + " which is already been assigned.\n";
-                        print.printOutputToFile(message);
-                        print.closeFileWriter();
+                        results.printRegConflictsToFile(message);
                     }
                 }
                 else{
-                    FileDisplayInterface print = new Results(errorLogsFilePath);
-                    print.getFileForWrite();
                     String message = "Student with id " + student.getId() +" cannot be allocated course "+ course.getCourseName()
                             + " as it is completely filled. \n";
-                    print.printOutputToFile(message);
-                    print.closeFileWriter();
-
-                    StdoutDisplayInterface stdout = new Results();
-                    stdout.printOutputToStdout(message);
+                    results.printErrorMessage(message);
                 }
             }
         }
@@ -184,7 +117,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
      * @return a boolean value representing the index of the course with which there is a time conflict or -1 if there is no time conflict.
      */
     public int timeConflict(int[] times, int currTime){
-        for(int i=0; i<noOfCoursesAllocated; i++){
+        for(int i=0; i<results.getNoOfCoursesAllocated(); i++){
             if (currTime==times[i]){
                 return i;
             }
@@ -192,38 +125,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         return -1;
     }
 
-    /**
-     * This method prints the results to the output file.
-     * @param outputFile output file path
-     * @throws IOException throws io exception if file is not found in the specified location.
-     */
-    public void printResults(String outputFile) throws IOException {
-        String output = this.toString();
 
-        FileDisplayInterface print = new Results(outputFile);
-        print.getFileForWrite();
-        print.printOutputToFile(output);
-        print.closeFileWriter();
-
-        StdoutDisplayInterface stdout = new Results();
-        stdout.printOutputToStdout(output);
-    }
-
-    /**
-     * @return the string representation of the allocated courses. In this case this string has the format required for the output.
-     */
-    public String toString(){
-        StringBuilder output = new StringBuilder(student.getId() + ":");
-        for (int i = 0; i < noOfCoursesAllocated; i++) {
-            if(i==noOfCoursesAllocated-1) {
-                output.append(allocatedCourses[i].getCourse().getCourseName());
-            }
-            else{
-                output.append(allocatedCourses[i].getCourse().getCourseName()).append(",");
-            }
-        }
-        output.append("::SatisfactionRating=").append(getAverageSatisfactionRate()).append("\n");
-        return output.toString();
-    }
 
 }

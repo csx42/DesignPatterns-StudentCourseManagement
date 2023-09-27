@@ -1,0 +1,15 @@
+Student with id 111 cannot be allocated course A as it is completely filled. 
+Student with id 333 cannot be allocated course B as it is completely filled. 
+Student with id 111 cannot be allocated course A as it is completely filled. 
+Student with id 333 cannot be allocated course B as it is completely filled. 
+Student with id 111 cannot be allocated course A as it is completely filled. 
+Student with id 333 cannot be allocated course B as it is completely filled. 
+Student with id 111 cannot be allocated course A as it is completely filled. 
+Student with id 333 cannot be allocated course B as it is completely filled. 
+Student with id 111 cannot be allocated course A as it is completely filled. 
+studentCoursesMgmt.util.Results@5674cd4dstudentCoursesMgmt.util.Results@681a9515Student with id 333 cannot be allocated course B as it is completely filled. 
+studentCoursesMgmt.util.Results@3af49f1cStudent with id 111 cannot be allocated course A as it is completely filled. 
+111:D,C,B::SatisfactionRating=7.67
+222:F,E,B::SatisfactionRating=8.0
+Student with id 333 cannot be allocated course B as it is completely filled. 
+333:D,F,E::SatisfactionRating=7.33

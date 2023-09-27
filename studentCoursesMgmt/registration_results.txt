@@ -1,0 +1,13 @@
+111:D,C,B::SatisfactionRating=7.67
+222:F,E,B::SatisfactionRating=8.0
+333:D,F,E::SatisfactionRating=7.33
+AverageSatisfactionRating=7.67111:D,C,B::SatisfactionRating=7.67
+222:F,E,B::SatisfactionRating=8.0
+333:D,F,E::SatisfactionRating=7.33
+AverageSatisfactionRating=7.67111:D,C,B::SatisfactionRating=7.67
+222:F,E,B::SatisfactionRating=8.0
+333:D,F,E::SatisfactionRating=7.33
+AverageSatisfactionRating=7.67111:D,C,B::SatisfactionRating=7.67
+222:F,E,B::SatisfactionRating=8.0
+333:D,F,E::SatisfactionRating=7.33
+AverageSatisfactionRating=7.67AverageSatisfactionRating=7.67AverageSatisfactionRating=7.67
