@@ -7,6 +7,7 @@ import studentCoursesMgmt.util.FileOutput;
 import java.util.Arrays;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import studentCoursesMgmt.util.FileOutput;
 
 public class Driver {
 	public static void main(String[] args) throws IOException {
@@ -52,9 +53,10 @@ public class Driver {
 					e.printStackTrace();
 					System.exit(0);
 				}
-				catch (ArrayIndexOutOfBoundsException e){
-					printErrorMessageToFile("NumberFormat Exception: invalid input.\n",errorLogsFilePath);
-					System.err.println("ArrayIndexOutOfBoundsException: All the preferences are not specified for the " +
+				catch (NullPointerException e){
+					printErrorMessageToFile("NullPointerException: All the preferences are not specified for the " +
+							"student with id " + Integer.parseInt(input[0]) + ".\n",errorLogsFilePath);
+					System.err.println("NullPointerException: All the preferences are not specified for the " +
 							"student with id " + Integer.parseInt(input[0]) + ".\n");
 					e.printStackTrace();
 					System.exit(0);
