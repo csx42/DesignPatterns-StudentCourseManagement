@@ -2,15 +2,14 @@ package studentCoursesMgmt.util;
 
 import java.io.IOException;
 
-public class Results implements FileDisplayInterface, StdoutDisplayInterface {
+public class FileOutput implements FileDisplayInterface, StdoutDisplayInterface {
 	private String filePath;
     FileProcessorInterface fileProcessor;
 
-    public Results(){
+    public FileOutput(){
 
     }
-
-    public Results(String filePath) {
+    public FileOutput(String filePath) {
         this.filePath = filePath;
         fileProcessor = new FileProcessor(filePath);
     }

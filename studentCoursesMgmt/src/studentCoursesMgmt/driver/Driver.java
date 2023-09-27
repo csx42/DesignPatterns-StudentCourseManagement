@@ -1,12 +1,9 @@
 package studentCoursesMgmt.driver;
 
+import studentCoursesMgmt.util.FileDisplayInterface;
 import studentCoursesMgmt.util.FileInput;
 import java.util.Arrays;
 import java.io.IOException;
-import studentCoursesMgmt.util.FileDisplayInterface;
-import studentCoursesMgmt.util.Results;
-import studentCoursesMgmt.util.StdoutDisplayInterface;
-import java.text.DecimalFormat;  
 import java.nio.file.FileSystems;
 
 public class Driver {
@@ -31,52 +28,39 @@ public class Driver {
 	}
 
 	public static void allocateAndPrintResult(StudentCourseInterface studentCourseAllocation, String[] preferred,
-											  Course[] availableCourseList, String coursePrefs, String results, String regConflictsFilePath,
+											  Course[] availableCourseList, String coursePrefs, String resultsFile, String regConflictsFilePath,
 											  String errorLogsFilePath) throws IOException {
 		FileInput fileInput = new FileInput(coursePrefs, " ");
 		fileInput.getFileForRead();
 		String[] input;
-		float avg=0;
-		int numberOfStudents = 0;
+		Results resultObj = new Results();
 		do {
 			input = fileInput.readFileContent();
 			if (input != null) {
-				studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
-				preferred = Arrays.copyOfRange(input, 1, 10);
-				preferred[8] = preferred[8].substring(0, 1);
-				studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
-				studentCourseAllocation.allocateCourses(regConflictsFilePath,errorLogsFilePath);
-				studentCourseAllocation.printResults(results);
-				avg+=studentCourseAllocation.getAverageSatisfactionRate();
-				numberOfStudents+=1;
+				try {
+					studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
+					preferred = Arrays.copyOfRange(input, 1, 10);
+					preferred[8] = preferred[8].substring(0, 1);
+					studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
+					studentCourseAllocation.allocateCourses(regConflictsFilePath, errorLogsFilePath, resultObj);
+				}
+				catch (NumberFormatException e){
+					System.err.println("NumberFormat Exception: invalid input.\n");
+					e.printStackTrace();
+					System.exit(0);
+				}
+				catch (ArrayIndexOutOfBoundsException e){
+					System.err.println("ArrayIndexOutOfBoundsException: All the preferences are not specified for the " +
+							"student with id " + Integer.parseInt(input[0]) + ".\n");
+					e.printStackTrace();
+					System.exit(0);
+				}
 			}
 		} while (input != null);
 
-		
-		printAverageSatisfactionRate(avg,numberOfStudents,results);
+		resultObj.printResults(resultsFile);
 	}
 
-	public static void printAverageSatisfactionRate(float averageSatisfactionRate,int numberOfStudents, String outputFile) throws IOException{
-
-		DecimalFormat decfor = new DecimalFormat("0.00");  
-
-		try{
-			averageSatisfactionRate = averageSatisfactionRate/numberOfStudents;
-		}
-		catch(ArithmeticException e){
-			System.err.println("divide by zero exception.");
-            e.printStackTrace();
-		}
-
-		FileDisplayInterface print = new Results(outputFile);
-        print.getFileForWrite();
-        print.printOutputToFile("AverageSatisfactionRating="+decfor.format(averageSatisfactionRate));
-        print.closeFileWriter();
-
-        StdoutDisplayInterface stdout = new Results();
-        stdout.printOutputToStdout("AverageSatisfactionRating="+decfor.format(averageSatisfactionRate));
-		
-	}
 
 	public static Course[] readCourseFile(String courseInfo) throws IOException{
 		AvailableCourses availableCourses = new AvailableCourses(9);
