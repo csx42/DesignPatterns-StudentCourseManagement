@@ -5,6 +5,7 @@ import studentCoursesMgmt.util.FileInput;
 import java.util.Arrays;
 import java.io.IOException;
 import java.nio.file.FileSystems;
+import studentCoursesMgmt.util.FileOutput;
 
 public class Driver {
 	public static void main(String[] args) throws IOException {
@@ -45,12 +46,15 @@ public class Driver {
 					studentCourseAllocation.allocateCourses(regConflictsFilePath, errorLogsFilePath, resultObj);
 				}
 				catch (NumberFormatException e){
+					printErrorMessageToFile("NumberFormat Exception: invalid input.\n",errorLogsFilePath);
 					System.err.println("NumberFormat Exception: invalid input.\n");
 					e.printStackTrace();
 					System.exit(0);
 				}
-				catch (ArrayIndexOutOfBoundsException e){
-					System.err.println("ArrayIndexOutOfBoundsException: All the preferences are not specified for the " +
+				catch (NullPointerException e){
+					printErrorMessageToFile("NullPointerException: All the preferences are not specified for the " +
+							"student with id " + Integer.parseInt(input[0]) + ".\n",errorLogsFilePath);
+					System.err.println("NullPointerException: All the preferences are not specified for the " +
 							"student with id " + Integer.parseInt(input[0]) + ".\n");
 					e.printStackTrace();
 					System.exit(0);
@@ -75,6 +79,13 @@ public class Driver {
 
 		}while (input!=null);
 		return availableCourses.getAvailableCourses();
+	}
+
+	public static void printErrorMessageToFile(String message, String file) throws IOException{
+		FileDisplayInterface print = new FileOutput(file);
+		print.getFileForWrite();
+		print.printOutputToFile(message);
+		print.closeFileWriter();
 	}
 
 }
