@@ -54,25 +54,17 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         preferredCourses = new CoursePreference[noOfPreferredCourses];
     }
 
-    public CoursePreference[] getPreference() {
-        return preferredCourses;
+    public int getMaximumCourseAllocation() {
+        return maximumCourseAllocation;
     }
 
-    public CoursePreference[] getAllocated() {
-        return allocatedCourses;
-    }
-
-    public int getNoOfCoursesAllocated() {
-        return noOfCoursesAllocated;
-    }
-
-    public void setNoOfCoursesAllocated(int noOfCoursesAllocated) {
-        this.noOfCoursesAllocated = noOfCoursesAllocated;
+    public void setMaximumCourseAllocation(int maximumCourse) {
+        maximumCourseAllocation = maximumCourse;
     }
 
     /**
-     * @param requestedCourse
-     * @return It returns preferred course object.
+     * @param requestedCourse I takes requested course as input of type Course
+     * @return It returns preferred course object of type CoursePreference.
      */
     private CoursePreference getPreferredCourseObject(Course requestedCourse){
         for (CoursePreference preferredCourse : preferredCourses) {
@@ -141,9 +133,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                             + " as it is completely filled. \n";
                     print.printOutputToFile(message);
                     print.closeFileWriter();
-
-                    StdoutDisplayInterface stdout = new FileOutput();
-                    stdout.printErrorToStdout(message);
                 }
             }
         }

@@ -8,6 +8,9 @@ import java.util.Arrays;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import studentCoursesMgmt.util.FileOutput;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Driver {
 	public static void main(String[] args) throws IOException {
@@ -20,13 +23,27 @@ public class Driver {
 			System.exit(0);
 		}
 
-		String userDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
-        userDirectory += "/";
+		// String userDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
+        // userDirectory += "/";
+
+		try{
+			Path myPath = Paths.get(args[2]);
+			Files.deleteIfExists(myPath);
+			myPath = Paths.get(args[3]);
+			Files.deleteIfExists(myPath);
+			myPath = Paths.get(args[4]);
+			Files.deleteIfExists(myPath);
+		}
+		catch(IOException e){
+			System.err.println("Unknown File exception.");
+			e.printStackTrace();
+			System.exit(0);
+		}
 		
-		Course[] availableCourseList = readCourseFile(userDirectory+args[1]);
+		Course[] availableCourseList = readCourseFile(args[1]);
 		StudentCourseInterface studentCourseAllocation = null;
 		String[] preferred = new String[0];
-		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, userDirectory+args[0], userDirectory+args[2], userDirectory+args[3], userDirectory+args[4]);
+		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, args[0], args[2], args[3], args[4]);
 
 	}
 
