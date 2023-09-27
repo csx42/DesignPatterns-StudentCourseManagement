@@ -1,11 +1,7 @@
 package studentCoursesMgmt.driver;
 
-import studentCoursesMgmt.util.FileDisplayInterface;
 import studentCoursesMgmt.util.Results;
-import studentCoursesMgmt.util.StdoutDisplayInterface;
 import java.io.IOException;
-import java.text.DecimalFormat;  
-
 /**
  * This class allocate courses to a student according the preferences specified.
  * @author Spoorthi
