@@ -1,10 +1,9 @@
 package studentCoursesMgmt.driver;
 
 import studentCoursesMgmt.util.FileDisplayInterface;
-import studentCoursesMgmt.util.Results;
+import studentCoursesMgmt.util.FileOutput;
 import studentCoursesMgmt.util.StdoutDisplayInterface;
 import java.io.IOException;
-import java.text.DecimalFormat;  
 
 /**
  * This class allocate courses to a student according the preferences specified.
@@ -55,25 +54,17 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         preferredCourses = new CoursePreference[noOfPreferredCourses];
     }
 
-    public CoursePreference[] getPreference() {
-        return preferredCourses;
+    public int getMaximumCourseAllocation() {
+        return maximumCourseAllocation;
     }
 
-    public CoursePreference[] getAllocated() {
-        return allocatedCourses;
-    }
-
-    public int getNoOfCoursesAllocated() {
-        return noOfCoursesAllocated;
-    }
-
-    public void setNoOfCoursesAllocated(int noOfCoursesAllocated) {
-        this.noOfCoursesAllocated = noOfCoursesAllocated;
+    public void setMaximumCourseAllocation(int maximumCourse) {
+        maximumCourseAllocation = maximumCourse;
     }
 
     /**
-     * @param requestedCourse
-     * @return It returns preferred course object.
+     * @param requestedCourse I takes requested course as input of type Course
+     * @return It returns preferred course object of type CoursePreference.
      */
     private CoursePreference getPreferredCourseObject(Course requestedCourse){
         for (CoursePreference preferredCourse : preferredCourses) {
@@ -93,33 +84,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         noOfCoursesAllocated+=1;
     }
 
-    /**
-     * This method calculates and returns total satisfaction rate.
-     */
-    public int calculateTotalSatisfactionRate(){
-        int totalSatisfactionRate = 0;
-        for (CoursePreference allocatedCourse : allocatedCourses) {
-            totalSatisfactionRate += allocatedCourse.getPreference();
-        }
-        return totalSatisfactionRate;
-    }
-
-    /**
-     * This method calculates average satisfaction rate
-     * @return float value of satisfaction rate or -1 if denominator is 0.
-     */
-    public float getAverageSatisfactionRate() {
-        DecimalFormat decfor = new DecimalFormat("0.00");
-        int totalSatisfactionRate = calculateTotalSatisfactionRate();
-        try {
-            return Float.valueOf(decfor.format((float)totalSatisfactionRate/noOfCoursesAllocated));
-        }
-        catch (ArithmeticException e){
-            System.err.println("divide by zero exception.");
-            e.printStackTrace();
-        }
-        return -1;
-    }
 
     /**
      * This method adds courses to the preferred courses. It does not create course object for each preference it gets the object from available
@@ -141,7 +105,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
      * it adds a message in regConflicts.txt. If requested has no seats remaining it reports an error to the errorLog.txt.
      * @throws IOException throws io exception when files are not found.
      */
-    public void allocateCourses(String regConflictsFilepath, String errorLogsFilePath) throws IOException {
+    public void allocateCourses(String regConflictsFilepath, String errorLogsFilePath, Results results) throws IOException {
         int[] times = new int[3];
         for (CoursePreference preferredCourse : preferredCourses) {
             if(noOfCoursesAllocated<maximumCourseAllocation){
@@ -153,7 +117,7 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                         assignCourse(course);
                         course.fillASeat();
                     } else {
-                        FileDisplayInterface print = new Results(regConflictsFilepath);
+                        FileDisplayInterface print = new FileOutput(regConflictsFilepath);
                         print.getFileForWrite();
                         String message = "Student with id " + student.getId() + " cannot be allocated course " + preferredCourse.getCourse().getCourseName()
                                 + " since it has a time conflict with " + allocatedCourses[ifTimeConflict].getCourse().getCourseName()
@@ -163,18 +127,16 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                     }
                 }
                 else{
-                    FileDisplayInterface print = new Results(errorLogsFilePath);
+                    FileDisplayInterface print = new FileOutput(errorLogsFilePath);
                     print.getFileForWrite();
                     String message = "Student with id " + student.getId() +" cannot be allocated course "+ course.getCourseName()
                             + " as it is completely filled. \n";
                     print.printOutputToFile(message);
                     print.closeFileWriter();
-
-                    StdoutDisplayInterface stdout = new Results();
-                    stdout.printOutputToStdout(message);
                 }
             }
         }
+        results.addToResults(student.getId(),allocatedCourses);
     }
 
     /**
@@ -193,23 +155,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     }
 
     /**
-     * This method prints the results to the output file.
-     * @param outputFile output file path
-     * @throws IOException throws io exception if file is not found in the specified location.
-     */
-    public void printResults(String outputFile) throws IOException {
-        String output = this.toString();
-
-        FileDisplayInterface print = new Results(outputFile);
-        print.getFileForWrite();
-        print.printOutputToFile(output);
-        print.closeFileWriter();
-
-        StdoutDisplayInterface stdout = new Results();
-        stdout.printOutputToStdout(output);
-    }
-
-    /**
      * @return the string representation of the allocated courses. In this case this string has the format required for the output.
      */
     public String toString(){
@@ -222,7 +167,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                 output.append(allocatedCourses[i].getCourse().getCourseName()).append(",");
             }
         }
-        output.append("::SatisfactionRating=").append(getAverageSatisfactionRate()).append("\n");
         return output.toString();
     }
 

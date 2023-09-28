@@ -1,13 +1,16 @@
 package studentCoursesMgmt.driver;
 
+import studentCoursesMgmt.util.FileDisplayInterface;
 import studentCoursesMgmt.util.FileInput;
+import studentCoursesMgmt.util.FileOutput;
+
 import java.util.Arrays;
 import java.io.IOException;
-import studentCoursesMgmt.util.FileDisplayInterface;
-import studentCoursesMgmt.util.Results;
-import studentCoursesMgmt.util.StdoutDisplayInterface;
-import java.text.DecimalFormat;  
 import java.nio.file.FileSystems;
+import studentCoursesMgmt.util.FileOutput;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class Driver {
 	public static void main(String[] args) throws IOException {
@@ -20,63 +23,67 @@ public class Driver {
 			System.exit(0);
 		}
 
-		String userDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
-        userDirectory += "/";
+		// String userDirectory = FileSystems.getDefault().getPath("").toAbsolutePath().toString();
+        // userDirectory += "/";
+
+		try{
+			Path myPath = Paths.get(args[2]);
+			Files.deleteIfExists(myPath);
+			myPath = Paths.get(args[3]);
+			Files.deleteIfExists(myPath);
+			myPath = Paths.get(args[4]);
+			Files.deleteIfExists(myPath);
+		}
+		catch(IOException e){
+			System.err.println("Unknown File exception.");
+			e.printStackTrace();
+			System.exit(0);
+		}
 		
-		Course[] availableCourseList = readCourseFile(userDirectory+args[1]);
+		Course[] availableCourseList = readCourseFile(args[1]);
 		StudentCourseInterface studentCourseAllocation = null;
 		String[] preferred = new String[0];
-		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, userDirectory+args[0], userDirectory+args[2], userDirectory+args[3], userDirectory+args[4]);
+		allocateAndPrintResult(studentCourseAllocation, preferred, availableCourseList, args[0], args[2], args[3], args[4]);
 
 	}
 
 	public static void allocateAndPrintResult(StudentCourseInterface studentCourseAllocation, String[] preferred,
-											  Course[] availableCourseList, String coursePrefs, String results, String regConflictsFilePath,
+											  Course[] availableCourseList, String coursePrefs, String resultsFile, String regConflictsFilePath,
 											  String errorLogsFilePath) throws IOException {
 		FileInput fileInput = new FileInput(coursePrefs, " ");
 		fileInput.getFileForRead();
 		String[] input;
-		float avg=0;
-		int numberOfStudents = 0;
+		Results resultObj = new Results();
 		do {
 			input = fileInput.readFileContent();
 			if (input != null) {
-				studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
-				preferred = Arrays.copyOfRange(input, 1, 10);
-				preferred[8] = preferred[8].substring(0, 1);
-				studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
-				studentCourseAllocation.allocateCourses(regConflictsFilePath,errorLogsFilePath);
-				studentCourseAllocation.printResults(results);
-				avg+=studentCourseAllocation.getAverageSatisfactionRate();
-				numberOfStudents+=1;
+				try {
+					studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
+					preferred = Arrays.copyOfRange(input, 1, 10);
+					preferred[8] = preferred[8].substring(0, 1);
+					studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
+					studentCourseAllocation.allocateCourses(regConflictsFilePath, errorLogsFilePath, resultObj);
+				}
+				catch (NumberFormatException e){
+					printErrorMessageToFile("NumberFormat Exception: invalid input.\n",errorLogsFilePath);
+					System.err.println("NumberFormat Exception: invalid input.\n");
+					e.printStackTrace();
+					System.exit(0);
+				}
+				catch (NullPointerException e){
+					printErrorMessageToFile("NullPointerException: All the preferences are not specified for the " +
+							"student with id " + Integer.parseInt(input[0]) + ".\n",errorLogsFilePath);
+					System.err.println("NullPointerException: All the preferences are not specified for the " +
+							"student with id " + Integer.parseInt(input[0]) + ".\n");
+					e.printStackTrace();
+					System.exit(0);
+				}
 			}
 		} while (input != null);
 
-		
-		printAverageSatisfactionRate(avg,numberOfStudents,results);
+		resultObj.printResults(resultsFile);
 	}
 
-	public static void printAverageSatisfactionRate(float averageSatisfactionRate,int numberOfStudents, String outputFile) throws IOException{
-
-		DecimalFormat decfor = new DecimalFormat("0.00");  
-
-		try{
-			averageSatisfactionRate = averageSatisfactionRate/numberOfStudents;
-		}
-		catch(ArithmeticException e){
-			System.err.println("divide by zero exception.");
-            e.printStackTrace();
-		}
-
-		FileDisplayInterface print = new Results(outputFile);
-        print.getFileForWrite();
-        print.printOutputToFile("AverageSatisfactionRating="+decfor.format(averageSatisfactionRate));
-        print.closeFileWriter();
-
-        StdoutDisplayInterface stdout = new Results();
-        stdout.printOutputToStdout("AverageSatisfactionRating="+decfor.format(averageSatisfactionRate));
-		
-	}
 
 	public static Course[] readCourseFile(String courseInfo) throws IOException{
 		AvailableCourses availableCourses = new AvailableCourses(9);
@@ -91,6 +98,13 @@ public class Driver {
 
 		}while (input!=null);
 		return availableCourses.getAvailableCourses();
+	}
+
+	public static void printErrorMessageToFile(String message, String file) throws IOException{
+		FileDisplayInterface print = new FileOutput(file);
+		print.getFileForWrite();
+		print.printOutputToFile(message);
+		print.closeFileWriter();
 	}
 
 }
