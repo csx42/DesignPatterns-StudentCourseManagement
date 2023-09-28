@@ -31,7 +31,7 @@ public class FileOutput implements FileDisplayInterface, StdoutDisplayInterface 
     }
 
     public void printErrorToStdout(String errorMessage){
-        System.err.println(errorMessage);
+        System.out.printf(errorMessage);
     }
 
     public String toString(){

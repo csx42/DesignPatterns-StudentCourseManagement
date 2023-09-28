@@ -70,6 +70,14 @@ public class StudentCourseAllocation implements StudentCourseInterface{
         this.noOfCoursesAllocated = noOfCoursesAllocated;
     }
 
+    public int getMaximumCourseAllocation() {
+        return maximumCourseAllocation;
+    }
+
+    public void setMaximumCourseAllocation(int maximumCourseAllocation) {
+        this.maximumCourseAllocation = maximumCourseAllocation;
+    }
+
     /**
      * @param requestedCourse
      * @return It returns preferred course object.
@@ -141,9 +149,6 @@ public class StudentCourseAllocation implements StudentCourseInterface{
                             + " as it is completely filled. \n";
                     print.printOutputToFile(message);
                     print.closeFileWriter();
-
-                    StdoutDisplayInterface stdout = new FileOutput();
-                    stdout.printErrorToStdout(message);
                 }
             }
         }
