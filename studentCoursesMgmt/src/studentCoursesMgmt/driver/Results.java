@@ -61,11 +61,13 @@ public class Results {
     public String toString(int id,CoursePreference[] allocated){
         StringBuilder output = new StringBuilder(id + ":");
         for (int i = 0; i < allocated.length; i++) {
-            if(i==allocated.length-1) {
-                output.append(allocated[i].getCourse().getCourseName());
-            }
-            else{
-                output.append(allocated[i].getCourse().getCourseName()).append(",");
+            if(allocated[i]!=null){
+                if(i==allocated.length-1) {
+                    output.append(allocated[i].getCourse().getCourseName());
+                }
+                else{
+                    output.append(allocated[i].getCourse().getCourseName()).append(",");
+                }
             }
         }
 
@@ -81,7 +83,9 @@ public class Results {
         DecimalFormat decfor = new DecimalFormat("0.00");
         int totalSatisfactionRate = 0;
         for (CoursePreference allocatedCourse : allocatedCourses) {
-            totalSatisfactionRate += allocatedCourse.getPreference();
+            if(allocatedCourse!=null){
+                totalSatisfactionRate += allocatedCourse.getPreference();
+            }
         }
 
         try {
