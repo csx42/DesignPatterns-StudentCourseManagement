@@ -6,13 +6,14 @@ import java.util.Scanner;
 
 public interface FileProcessorInterface {
 
-    public Scanner getFileForRead() throws IOException;
+    public Scanner getFileForRead();
 
-    public FileWriter getFileForWrite() throws IOException;
+    public FileWriter getFileForWrite();
 
-    public String readFile() throws IOException;
+    public String readFile();
 
-    public void writeToFile(String output) throws IOException;
+    public void writeToFile(String output);
 
-    public void closeFile() throws IOException;
+    public void closeWriteFile();
+    public void closeReadFile();
 }

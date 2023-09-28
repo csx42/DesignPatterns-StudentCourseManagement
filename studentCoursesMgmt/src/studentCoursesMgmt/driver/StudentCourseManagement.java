@@ -12,6 +12,9 @@ import java.util.Arrays;
 
 public class StudentCourseManagement {
 
+    int noOfCourses = 9;
+    int maximumCourseAllocation = 3;
+
     public void deleteOutputFiles(String[] args){
         try{
             Path myPath = Paths.get(args[2]);
@@ -38,43 +41,43 @@ public class StudentCourseManagement {
         }
     }
     public void allocateAndPrintResult(Course[] availableCourseList, String coursePrefs, String regConflictsFilePath,
-                                       String errorLogsFilePath,Results resultsObj) throws IOException {
+                                       String errorLogsFilePath,Results resultsObj) {
         StudentCourseInterface studentCourseAllocation;
         String[] preferred;
         FileInput fileInput = new FileInput(coursePrefs, " ");
         fileInput.getFileForRead();
-        String[] input;
-        do {
-            input = fileInput.readFileContent();
-            if (input != null) {
-                try {
+        String[] input = new String[0];
+        try {
+            do {
+                input = fileInput.readFileContent();
+                if (input != null) {
                     studentCourseAllocation = new StudentCourseAllocation(Integer.parseInt(input[0]));
                     preferred = Arrays.copyOfRange(input, 1, 10);
                     preferred[8] = preferred[8].substring(0, 1);
                     studentCourseAllocation.setPreferredCourses(preferred, availableCourseList);
                     studentCourseAllocation.allocateCourses(regConflictsFilePath, errorLogsFilePath, resultsObj);
                 }
-                catch (NumberFormatException e){
-                    printErrorMessageToFile("NumberFormat Exception: invalid input.\n",errorLogsFilePath);
-                    System.err.println("NumberFormat Exception: invalid input.\n");
-                    e.printStackTrace();
-                    System.exit(0);
-                }
-                catch (NullPointerException e){
-                    printErrorMessageToFile("NullPointerException: All the preferences are not specified for the " +
-                            "student with id " + Integer.parseInt(input[0]) + ".\n",errorLogsFilePath);
-                    System.err.println("NullPointerException: All the preferences are not specified for the " +
-                            "student with id " + Integer.parseInt(input[0]) + ".\n");
-                    e.printStackTrace();
-                    System.exit(0);
-                }
-            }
-        } while (input != null);
-
-
+            } while (input != null);
+        }
+        catch (NumberFormatException e) {
+            printErrorMessageToFile("NumberFormat Exception: invalid input.\n", errorLogsFilePath);
+            System.err.println("NumberFormat Exception: invalid input.\n");
+            e.printStackTrace();
+            System.exit(0);
+        } catch (NullPointerException e) {
+            printErrorMessageToFile("NullPointerException: All the preferences are not specified for the " +
+                    "student with id " + Integer.parseInt(input[0]) + ".\n", errorLogsFilePath);
+            System.err.println("NullPointerException: All the preferences are not specified for the " +
+                    "student with id " + Integer.parseInt(input[0]) + ".\n");
+            e.printStackTrace();
+            System.exit(0);
+        }
+        finally {
+            fileInput.closeFile();
+        }
     }
 
-    public Course[] readCourseFile(String courseInfo) throws IOException{
+    public Course[] readCourseFile(String courseInfo){
         Course[] availableCourses = new Course[9];
         FileInput fileInput = new FileInput(courseInfo,":");
         fileInput.getFileForRead();
@@ -91,7 +94,7 @@ public class StudentCourseManagement {
         return availableCourses;
     }
 
-    public void printErrorMessageToFile(String message, String file) throws IOException{
+    public void printErrorMessageToFile(String message, String file){
         FileDisplayInterface print = new FileOutput(file);
         print.getFileForWrite();
         print.printOutputToFile(message);

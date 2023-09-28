@@ -103,9 +103,8 @@ public class StudentCourseAllocation implements StudentCourseInterface{
     /**
      * This method allocates courses to the student based on first come first serve. It checks for time conflicts between the courses. It there is a time conflict
      * it adds a message in regConflicts.txt. If requested has no seats remaining it reports an error to the errorLog.txt.
-     * @throws IOException throws io exception when files are not found.
      */
-    public void allocateCourses(String regConflictsFilepath, String errorLogsFilePath, Results results) throws IOException {
+    public void allocateCourses(String regConflictsFilepath, String errorLogsFilePath, Results results){
         int[] times = new int[3];
         for (CoursePreference preferredCourse : preferredCourses) {
             if(noOfCoursesAllocated<maximumCourseAllocation){

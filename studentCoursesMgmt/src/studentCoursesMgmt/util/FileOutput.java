@@ -14,16 +14,16 @@ public class FileOutput implements FileDisplayInterface, StdoutDisplayInterface 
         fileProcessor = new FileProcessor(filePath);
     }
 
-    public void getFileForWrite() throws IOException {
+    public void getFileForWrite(){
         fileProcessor.getFileForWrite();
     }
 
-    public void printOutputToFile(String output) throws IOException {
+    public void printOutputToFile(String output){
         fileProcessor.writeToFile(output);
     }
 
-    public void closeFileWriter() throws IOException{
-        fileProcessor.closeFile();
+    public void closeFileWriter() {
+        fileProcessor.closeWriteFile();
     }
 
     public void printOutputToStdout(String output){

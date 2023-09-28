@@ -3,7 +3,7 @@ package studentCoursesMgmt.driver;
 import java.io.IOException;
 
 public class Driver {
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args){
 
 		StudentCourseManagement studentCourseManagement = new StudentCourseManagement();
 		studentCourseManagement.argsCheck(args);

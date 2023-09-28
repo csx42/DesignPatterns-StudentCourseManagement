@@ -29,17 +29,21 @@ public class FileInput {
         this.delimiter = delimiter;
     }
 
-    public void getFileForRead() throws IOException{
+    public void getFileForRead(){
         fileProcessor.getFileForRead();
     }
 
-    public String[] readFileContent() throws IOException {
+    public String[] readFileContent() {
         String input = fileProcessor.readFile();
         if (input != null) {
             return input.split(delimiter);
         } else {
             return null;
         }
+    }
+
+    public void closeFile(){
+        fileProcessor.closeReadFile();
     }
 
     public String toString(){

@@ -27,9 +27,8 @@ public class Results {
     /**
      * This method prints the results to the output file.
      * @param outputFile output file path
-     * @throws IOException throws io exception if file is not found in the specified location.
      */
-    public void printResults(String outputFile) throws IOException {
+    public void printResults(String outputFile) {
         DecimalFormat decfor = new DecimalFormat("0.00");
         FileDisplayInterface print = new FileOutput(outputFile);
         print.getFileForWrite();

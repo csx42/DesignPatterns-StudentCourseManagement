@@ -59,14 +59,32 @@ public class FileProcessor implements FileProcessorInterface{
         }
     }
 
-    public void writeToFile(String output) throws IOException {
-        if(output!=null){
-            fileWriter.write(output);
+    public void writeToFile(String output){
+        try {
+            if (output != null) {
+                fileWriter.write(output);
+            }
+        }
+        catch (IOException e){
+            System.err.println("Couldn't fetch file.");
+            e.printStackTrace();
+            System.exit(0);
         }
     }
 
-    public void closeFile() throws IOException {
-        fileWriter.close();
+    public void closeWriteFile(){
+        try {
+            fileWriter.close();
+        }
+        catch (IOException e){
+            System.err.println("Couldn't close file.");
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
+
+    public void closeReadFile(){
+        scanner.close();
     }
 
     public String toString(){
