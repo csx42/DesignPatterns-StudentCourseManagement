@@ -59,7 +59,9 @@ These classes acts as templates for data. Just like database schema. Models does
 - Stores the output for each student in Results.
 
 3)FileProcessor.java - It contains all the generic functions that can be used for file input and output. 
+
 4)FileInput.java - This class is reading input files specific to this assignment. It methods read data line by line and                       split's it based on the delimiter in the line. It uses methods in FileProcessor to do the job. 
+
 5)FileOutput.java - All the output emitting helper methods are in this class. It uses FileProcessor object and implements                     FileDisplayInterface and StdoutDisplayInterface.
 
 
