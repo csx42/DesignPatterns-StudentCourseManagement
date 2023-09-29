@@ -38,44 +38,45 @@ Note: Arguments accept the absolute path of the files.
 -----------------------------------------------------------------------
 ## Description:
 
-Classes:
+## Model classes: 
+These classes acts as templates for data. Just like database schema. Models does not have interfaces because they just act as templates with only getters and setter. 
+1. Course.java - It has data members related to course. 
+2. Student.java - It has data members realted to student. 
+3. CoursePreference.java - It has one course object and student preference for that course. 
+4. Results.java- It stores results for final output.
 
-Model classes: These classes acts as templates for data. Just like database schema. Models does not have interfaces because they just act as templates with only getters and setter.
-  Course.java - It has data members related to course. 
-  Student.java - It has data members realted to student.
-  CoursePreference.java - It has one course object and student preference for that course.
-  Results.java- It stores results for final output.
 
-Utility classes:
-StudentCourseManagement.java 
-  1)It reads the course input and stores in an array from courseInfo.txt. The reference to this array is passed      everywhere. 
-  2)It reads student information and preferences of student from coursePrefs.txt. This data along with available course list is used to for student course allocation.
-  3)It validates command line arguments.
-  4) Deletes older output files if exsits.
 
-StudentCourseAllocation.java
-  1)It gets all the necessary information from StudentCourseManagement.java and allocates courses to student based on FCFS algorithm.
-  2)Stores the output for each student in Results.
+## Utility classes: 
+1)StudentCourseManagement.java
+- It reads the course input and stores in an array from courseInfo.txt. The reference to this array is passed everywhere. 
+- It reads student information and preferences of student from coursePrefs.txt. This data along with available course list is used to for student course allocation.
+- It validates command line arguments.
+- Deletes older output files if exists.
 
-FileProcessor.java - It contains all the generic functions that can be used for file input and ouptput.
-FileInput.java - This class is specifically for reading this assignment input files. It methods read data line by line and split's it based on the delimeter. It uses methods in FileProcessor to do the job.
-FileOutput.java - All the output emiting helper methods are in this class. It uses FileProcessor object and implements FileDisplayInterface and StdoutDisplayInterface. 
+2)StudentCourseAllocation.java 
+- It gets all the necessary information from StudentCourseManagement.java and allocates courses to student based on FCFS algorithm. 
+- Stores the output for each student in Results.
 
-All the classes are coded for interfaces other than model classes.
+3)FileProcessor.java - It contains all the generic functions that can be used for file input and output. 
+4)FileInput.java - This class is reading input files specific to this assignment. It methods read data line by line and                       split's it based on the delimiter in the line. It uses methods in FileProcessor to do the job. 
+5)FileOutput.java - All the output emitting helper methods are in this class. It uses FileProcessor object and implements                     FileDisplayInterface and StdoutDisplayInterface.
 
-For storing the results:
+
+## Data Structure for storing result :  
 A hashmap is used to store the results in Results.java. It stores Student id as key and an array of allocated courses as value. I have used hashmap for two reasons, It is dynamic as we don't know number of students and we can easily fetch information based on student id.
 
-Time Complexity:
+## Time Complexity:
 Allocation is based on FCFS algorithm. If n is number of students and m is number of preferences given, my worst case time complexity will be T(n) = O(mn). Since m=9 for this assignment, T(n) = O(n).
 
-Space Complexity:
+## Space Complexity: 
 If the number of Students is considered as n for space complexity calculation. Then space complexity is O(n).
 
-Some design guidelines used: 
-1) I have only used composition in all classes not inheritance because non of the classes have "IS-A" relationship between them.
-2) There is no interface for model classes since it stores the information for processing and has only getters and setters. 
-3) Other than model classes others have been coded to the interface.
+## Some design guidelines used:
+1. I have only used composition in all classes not inheritance because non of the classes have "IS-A" relationship between them.
+2. There is no interface for model classes since it stores the information for processing and has only getters and setters.
+3. Other than model classes others have been coded to the interface.
+
 
 -----------------------------------------------------------------------
 ### Academic Honesty statement:
