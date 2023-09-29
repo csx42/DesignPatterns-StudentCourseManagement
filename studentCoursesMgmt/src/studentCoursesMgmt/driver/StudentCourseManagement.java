@@ -2,6 +2,7 @@ package studentCoursesMgmt.driver;
 
 import studentCoursesMgmt.util.FileDisplayInterface;
 import studentCoursesMgmt.util.FileInput;
+import studentCoursesMgmt.util.FileInputInterface;
 import studentCoursesMgmt.util.FileOutput;
 
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-public class StudentCourseManagement {
+public class StudentCourseManagement implements StudentCourseManagementInterface{
 
     int noOfCourses = 9;
     int maximumCourseAllocation = 3;
@@ -44,7 +45,7 @@ public class StudentCourseManagement {
                                        String errorLogsFilePath,Results resultsObj) {
         StudentCourseInterface studentCourseAllocation;
         String[] preferred;
-        FileInput fileInput = new FileInput(coursePrefs, " ");
+        FileInputInterface fileInput = new FileInput(coursePrefs, " ");
         fileInput.getFileForRead();
         String[] input = new String[0];
         try {
@@ -79,7 +80,7 @@ public class StudentCourseManagement {
 
     public Course[] readCourseFile(String courseInfo){
         Course[] availableCourses = new Course[9];
-        FileInput fileInput = new FileInput(courseInfo,":");
+        FileInputInterface fileInput = new FileInput(courseInfo,":");
         fileInput.getFileForRead();
         String[] input;
         int count =0;

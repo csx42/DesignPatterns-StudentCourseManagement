@@ -2,7 +2,7 @@ package studentCoursesMgmt.util;
 
 import java.io.IOException;
 
-public class FileInput {
+public class FileInput implements FileInputInterface{
     FileProcessorInterface fileProcessor;
     private String filePath;
     private String delimiter;

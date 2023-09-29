@@ -5,7 +5,7 @@ import java.io.IOException;
 public class Driver {
 	public static void main(String[] args){
 
-		StudentCourseManagement studentCourseManagement = new StudentCourseManagement();
+		StudentCourseManagementInterface studentCourseManagement = new StudentCourseManagement();
 		studentCourseManagement.argsCheck(args);
 		studentCourseManagement.deleteOutputFiles(args);
 		
