@@ -38,23 +38,47 @@ Note: Arguments accept the absolute path of the files.
 -----------------------------------------------------------------------
 ## Description:
 
-Data Structure and Space complexity:
+## Model classes: 
+These classes acts as templates for data. Just like database schema. Models does not have interfaces because they just act as templates with only getters and setter. 
+1. Course.java - It has data members related to course. 
+2. Student.java - It has data members realted to student. 
+3. CoursePreference.java - It has one course object and student preference for that course. 
+4. Results.java- It stores results for final output.
 
-For course allocation:
-Courses - Stored in a array of Course Objects. 
-Student - Student id and Preferences are stored in Student Object and array of CoursePreference Objects respectively for processing. Student information is processed line by line and whole student information is NOT stored in any data Structure. The StudentCourseAllocation object gets deleted after that student is allocated.
-Allocation - An array of CoursePreference object is used to temporarily store allocated courses. 
 
-For storing the results:
-Results - A hashmap to store the student id and an array of CoursePreference. This Result is used to print results to the file and stdout at the end.
 
-Space Complexity:
+## Utility classes: 
+1)StudentCourseManagement.java
+- It reads the course input and stores in an array from courseInfo.txt. The reference to this array is passed everywhere. 
+- It reads student information and preferences of student from coursePrefs.txt. This data along with available course list is used to for student course allocation.
+- It validates command line arguments.
+- Deletes older output files if exists.
+
+2)StudentCourseAllocation.java 
+- It gets all the necessary information from StudentCourseManagement.java and allocates courses to student based on FCFS algorithm. 
+- Stores the output for each student in Results.
+
+3)FileProcessor.java - It contains all the generic functions that can be used for file input and output. 
+
+4)FileInput.java - This class is reading input files specific to this assignment. It methods read data line by line and                       split's it based on the delimiter in the line. It uses methods in FileProcessor to do the job. 
+
+5)FileOutput.java - All the output emitting helper methods are in this class. It uses FileProcessor object and implements                     FileDisplayInterface and StdoutDisplayInterface.
+
+
+## Data Structure for storing result :  
+A hashmap is used to store the results in Results.java. It stores Student id as key and an array of allocated courses as value. I have used hashmap for two reasons, It is dynamic as we don't know number of students and we can easily fetch information based on student id.
+
+## Time Complexity:
+Allocation is based on FCFS algorithm. If n is number of students and m is number of preferences given, my worst case time complexity will be T(n) = O(mn). Since m=9 for this assignment, T(n) = O(n).
+
+## Space Complexity: 
 If the number of Students is considered as n for space complexity calculation. Then space complexity is O(n).
 
-Some design guidelines used: 
-1) I have only used composition in all classes not inheritance because non of the classes have "IS-A" relationship between them.
-2) There is no interface for model classes since it stores the information for processing and has only getters and setters. 
-3) Other than model classes others have been coded to the interface.
+## Some design guidelines used:
+1. I have only used composition in all classes not inheritance because non of the classes have "IS-A" relationship between them.
+2. There is no interface for model classes since it stores the information for processing and has only getters and setters.
+3. Other than model classes others have been coded to the interface.
+
 
 -----------------------------------------------------------------------
 ### Academic Honesty statement:
